@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -24,11 +27,13 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            // ->add('roles')
+            ->add('email', EmailType::class,[
+                'attr' => [
+                'placeholder' => "Veuillez saisir un email",
+                ],
+            ])
+
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -40,13 +45,22 @@ class UserType extends AbstractType
 
 
                        'minMessage' => 'Your password should be at least {{ limit }} characters with 1 number and 1 letter',
-                       // max length allowed by Symfony for security reasons
                        'max' => 4096,
                     ]),
                 ],
             ])
-            ->add('nom')
-            ->add('prenom')
+            ->add('nom', TextType::class, [
+                "attr" => [
+                    "class" => "form-control"
+                ]
+            ])
+
+            ->add('prenom', TextType::class, [
+                "attr" => [
+                    "class" => "form-control"
+                ]
+            ])
+
             ->add('photo', FileType::class, [
                 "attr" => [
                     "class" => "form-control"
@@ -64,10 +78,30 @@ class UserType extends AbstractType
                     ])
                 ],
             ])
-            ->add('secteur')
-            ->add('type_contrat')
-            ->add('date_sortie')
+            ->add('secteur', ChoiceType::class,[
+                'choices' => [
+                    'RH' => 'rh',
+                    'Informatique' => 'Informatique',
+                    'Comptabilité' => 'Comptabilité',
+                    'Direction' => 'Direction',
+                ]
+            ])
+            ->add('type_contrat', ChoiceType::class,[
+                'choices' => [
+                    'CDI' => 'cdi',
+                    'CDD' => 'cdd',
+                    'Interim' => 'interim',
+                ]
+            ])
+            ->add('date_sortie', DateType::class,[
+                "attr" => [
+                    "class" => "form-control"
+                ]
+            ])
+
         ;
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

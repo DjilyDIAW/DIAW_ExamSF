@@ -1,4 +1,18 @@
+{# {{ form_start(form) }} #}
+    {# {{ form_widget(form) }} #}
+    {# <button class="btn">{{ button_label|default('Save') }}</button> #}
+{# {{ form_end(form) }} #}
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.email) }}
+    {{ form_row(form.plainPassword) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.prenom) }}
+    {{ form_row(form.photo) }}
+    {{ form_row(form.secteur) }}
+    {{ form_row(form.type_contrat) }}
+    {{ form_label(form.date_sortie, 'Date de fin de contrat', {'label_attr': {'class': 'd-none lab'}}) }}
+    {{ form_widget(form.date_sortie, {'attr': {'class': 'd-none'}}) }}
+
+<button class="btn btn-primary h3 my-3">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

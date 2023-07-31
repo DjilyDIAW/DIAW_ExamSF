@@ -35,17 +35,20 @@ class UserType extends AbstractType
 
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
+                'attr' => ['placeholder' => "Veuillez saisir un mot de passe avec 8 caractères, 1 chiffre et 1 lettre",
+                     'autocomplete' => 'new-password'],
+                     'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
                     ]),
                    new Length([
                        'min' => 8,
-
-
                        'minMessage' => 'Your password should be at least {{ limit }} characters with 1 number and 1 letter',
                        'max' => 4096,
+                    ]),
+                    new Regex([
+                        'pattern' => '/(?=\S*[a-z])(?=\S*\d)/',
+                        'message' => 'Your password should contain at least 1 number and 1 letter',
                     ]),
                 ],
             ])
